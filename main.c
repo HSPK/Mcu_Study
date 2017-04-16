@@ -115,7 +115,7 @@ void playMusic()
 		}
 		else
 		{
-			soundTime = ((beatTime>>2)*3);
+			soundTime = ((beatTime>>3)*7);
 		}
 		enable = 1;
 		}
