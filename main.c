@@ -49,6 +49,7 @@ void playMusic()
 for(musicCon=0;musicCon<(sizeof(musicArray[])>>1);)
   {
 	while(!tmrFlag);
+	tmrFlag = 0;
 	if(time==beatTime)
 	{
 		musicCon++;
