@@ -4,7 +4,16 @@ typedef unsigned int  uint16;
 typedef char int8;
 typedef int  int16;
 int8 code musicArray[]={};
-in16 code soundFrequ[]={262,};
+int16 code soundFrequ[]={262,};
+int16 code tmr0reload[]={
+		65536 -(12000000\12)\(262*2),
+		65536 -(12000000\12)\(262*2),
+		65536 -(12000000\12)\(262*2),
+		65536 -(12000000\12)\(262*2),
+		65536 -(12000000\12)\(262*2),
+		65536 -(12000000\12)\(262*2),
+		65536 -(12000000\12)\(262*2)
+};
 bit tmrFlag = 0;
 bit enable  = 0;
 uint8 T0RH,T0RL;
@@ -25,13 +34,11 @@ void main()
 
 void Init()
 {
-	P0 = 0xff;
-	TMOD = 0X01;
+	TMOD = 0X01;      //tmr0 init 
 	TH0 = T0RH;
 	TL0 = T0RL;
 	EA = 1;
 	ET0 = 1;
-	P1=0XF0;
 }
 
 
@@ -39,25 +46,22 @@ void playMusic()
 {
 	uint8 musicCon,j;
 	uint16 time,soundTime,beatTime;
-for(musicCon=0;musicCon<sizeof((musicArray[]\2));musicCon++)
+for(musicCon=0;musicCon<(sizeof(musicArray[])>>1);)
   {
 	while(!tmrFlag);
 	if(time==beatTime)
 	{
-		
+		musicCon++;
+		T0RH =tmr0reload[musicArray[(musicCon-1)]]>>8;
+		T0RL =tmr0reload[musicArray[(musicCon-1)]];
+		beatTime  = soundFrequ[musicArray[(musicCon-1)]]*2*musicArray[musicCon];
+		soundTime = (beatTime>>3)*3;
+		enable = 1;
 	}
-	else if()
+	else if(time==soundTime)
 	{
-		if()
-		{
-		}
-		else
-		{
-		}
-	}
+			enable=0;
   }
-
-
 }
 
 
