@@ -81,6 +81,7 @@ void playMusic()
 		
 		musicScale = (musicArray[musicCon]%100);
 		musicLong = (musicArray[musicCon]/100)%10);
+		musicLine = (musicArray[musicCon]%1000);
 		
 		if (!musicScale)
 		{
