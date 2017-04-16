@@ -82,7 +82,7 @@ void playMusic()
 	uint8 musicScale;
 	uint8 musicLong;
 	bit musicLine;
-	for(musicCon=0;musicCon<(sizeof(musicArray);)
+	for(musicCon=0;musicCon<sizeof(musicArray);)
   {
 	while(!tmrFlag);
 	tmrFlag = 0;
