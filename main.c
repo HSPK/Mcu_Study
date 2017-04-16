@@ -77,31 +77,46 @@ void Init()
 
 void playMusic()
 {
-	int musicCon=-1;
+	uint16 musicCon=0;
 	uint16 time=0,soundTime=0,beatTime=0;
-	for(musicCon=-1;musicCon<(sizeof(musicArray)+1);)
+	uint8 musicScale;
+	uint8 musicLong;
+	bit musicLine;
+	for(musicCon=0;musicCon<(sizeof(musicArray);)
   {
 	while(!tmrFlag);
 	tmrFlag = 0;
 	if(time==beatTime)
 	{
-		musicCon+=2;
+		musicCon++;
 		time = 0;
-		if (!musicArray[(musicCon-1)])
+		
+		musicScale = (musicArray[musicCon]%100);
+		musicLong = (musicArray[musicCon]/100)%10);
+		
+		if (!musicScale)
 		{
 			enable = 0;
 			T0RH = 0XD8;
 			T0RL = 0XF0;
-			beatTime = 30*musicArray[musicCon];
+			beatTime = 25*musicLong;
 			enable = 0;
 		}
 		else
 		{
-		T0RH =tmr0reload[musicArray[(musicCon-1)]]>>8;
-		T0RL =tmr0reload[musicArray[(musicCon-1)]];
-		beatTime  = soundFrequ[musicArray[(musicCon-1)]]*2*musicArray[musicCon];
+
+		T0RH =tmr0reload[musicScale]>>8;
+		T0RL =tmr0reload[musicScale];
+		beatTime  = soundFrequ[musicScale]*musicLong;
 		beatTime = beatTime>>1;
-		soundTime = ((beatTime*3)>>2);
+		if(musicLine)
+		{
+			soundTime = beatTime; 
+		}
+		else
+		{
+			soundTime = ((beatTime>>2)*3);
+		}
 		enable = 1;
 		}
 	}
