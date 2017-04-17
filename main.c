@@ -1,15 +1,10 @@
 #include <reg52.h>
 #define mainScale 3    //c scale
+#define musicSpeed 2     //music speed
 typedef unsigned char uint8;
 typedef unsigned int  uint16;
 typedef char int8;
 typedef int  int16;
-/*uint8 code musicArray[]={0,1,0,1,5,1,	1,3,	1,2,2,1,3,1,	5,1,3,1,3,1,	3,2,5,1,	1,3,	2,1,1,1,6,1,
-						 5,3,	5,2,5,1,	1,3,	1,2,2,1,3,1,	6,1,3,1,5,1,	5,1,3,1,2,1,	1,3,	2,2,5,1,
-						 3,1,2,2,	2,2,3,1,	5,3,	5,1,3,1,5,1,	6,1,1,1,6,1,	6,2,3,1,	2,2,1,1,	2,2,3,1,
-						 3,3,	3,2,5,1,	5,3,	0,1,3,1,3,1,	2,1,1,1,1,1,	1,2,5,1,	2,2,1,1,	3,1,2,1,1,3,0,1}; 	*/					  //δ����
-/*uint8 code musicArray[]={1,2,2,2,	3,2,1,2,	1,2,2,2,	3,2,1,2,	3,2,4,2,5,2,0,2,	3,2,4,2,5,2,0,2,
-						 5,1,6,1,5,1,4,1,3,2,1,2,	5,1,6,1,5,1,4,1,3,2,1,2,	2,2,8,2,1,2,0,2,	2,2,8,2,1,2,0,2};    //�ֻ�ϻ�			 */
 
 uint8 code musicArray[]={
 						0,1,0,1,5,1,	1,3,	1,2,2,1,3,1,	5,1,3,1,3,1,	3,2,5,1,	1,3,	2,1,1,1,6,1,
@@ -23,7 +18,7 @@ uint8 code musicArray[]={
 
 
 1,1,1,1,5,1,5,1,	6,1,6,1,5,2,	4,1,4,1,3,1,3,1,	2,1,2,1,1,2,	5,1,5,1,4,1,4,1,	3,1,3,1,2,2,5,1,5,1,4,1,4,1,	3,1,3,1,2,2,	1,1,1,1,5,1,5,1,	6,1,6,1,5,2,	4,1,4,1,3,1,3,1,	2,1,2,1,1,2	};
-uint16 code soundFrequ[7][13]={{000,1047,1175,1319,1397,1568,1760,1976,784},{},{},{},{},{},{},};
+uint16 code soundFrequ[7][12]={{1047,1175,1319,1397,1568,1760,1976,784},{},{},{},{},{},{},};
 uint16 code tmr0reload[7][13]={
       	65535,
 		65536 -(12000000/12)/(1047*2),
@@ -81,7 +76,7 @@ void playMusic()
 		musicCon++;
 		time = 0;
 		
-		musicScale = (musicArray[musicCon]%10);
+		musicScale = (musicArray[musicCon]%10)-1;
 		musicDegree = (musicArray[musicCon]/10%10);
 		musicLong = (musicArray[musicCon]/100)%10);
 		musicLine = (musicArray[musicCon]%1000);
@@ -92,7 +87,7 @@ void playMusic()
 			enable = 0;
 			T0RH = 0XD8;
 			T0RL = 0XF0;
-			beatTime = 25*musicLong;
+			beatTime = (50*musicLong)/musicSpeed;
 			enable = 0;
 		}
 		else
@@ -101,14 +96,14 @@ void playMusic()
 		T0RH =tmr0reload[musicDegree][musicScale]>>8;
 		T0RL =tmr0reload[musicDegree][musicScale];
 		beatTime  = soundFrequ[musicDegree][musicScale]*musicLong;
-		beatTime = beatTime>>1;
+		beatTime = beatTime/musicSpeed;
 		if(musicLine)
 		{
 			soundTime = beatTime; 
 		}
 		else
 		{
-			soundTime = ((beatTime>>3)*7);
+			soundTime = ((beatTime>>2)*3);
 		}
 		enable = 1;
 		}
