@@ -1,4 +1,5 @@
 #include <reg52.h>
+#define mainScale 3    //c scale
 typedef unsigned char uint8;
 typedef unsigned int  uint16;
 typedef char int8;
@@ -22,8 +23,8 @@ uint8 code musicArray[]={
 
 
 1,1,1,1,5,1,5,1,	6,1,6,1,5,2,	4,1,4,1,3,1,3,1,	2,1,2,1,1,2,	5,1,5,1,4,1,4,1,	3,1,3,1,2,2,5,1,5,1,4,1,4,1,	3,1,3,1,2,2,	1,1,1,1,5,1,5,1,	6,1,6,1,5,2,	4,1,4,1,3,1,3,1,	2,1,2,1,1,2	};
-uint16 code soundFrequ[]={000,1047,1175,1319,1397,1568,1760,1976,784};
-uint16 code tmr0reload[]={
+uint16 code soundFrequ[7][13]={{000,1047,1175,1319,1397,1568,1760,1976,784},{},{},{},{},{},{},};
+uint16 code tmr0reload[7][13]={
       	65535,
 		65536 -(12000000/12)/(1047*2),
 		65536 -(12000000/12)/(1175*2),
@@ -68,6 +69,7 @@ void playMusic()
 	uint16 musicCon=0;
 	uint16 time=0,soundTime=0,beatTime=0;
 	uint8 musicScale;
+	uint8 musicDegree;
 	uint8 musicLong;
 	bit musicLine;
 	for(musicCon=0;musicCon<sizeof(musicArray);)
@@ -79,9 +81,11 @@ void playMusic()
 		musicCon++;
 		time = 0;
 		
-		musicScale = (musicArray[musicCon]%100);
+		musicScale = (musicArray[musicCon]%10);
+		musicDegree = (musicArray[musicCon]/10%10);
 		musicLong = (musicArray[musicCon]/100)%10);
 		musicLine = (musicArray[musicCon]%1000);
+		musicDegree = mainScale + musicDegree - 5;
 		
 		if (!musicScale)
 		{
@@ -94,9 +98,9 @@ void playMusic()
 		else
 		{
 
-		T0RH =tmr0reload[musicScale]>>8;
-		T0RL =tmr0reload[musicScale];
-		beatTime  = soundFrequ[musicScale]*musicLong;
+		T0RH =tmr0reload[musicDegree][musicScale]>>8;
+		T0RL =tmr0reload[musicDegree][musicScale];
+		beatTime  = soundFrequ[musicDegree][musicScale]*musicLong;
 		beatTime = beatTime>>1;
 		if(musicLine)
 		{
