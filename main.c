@@ -1,15 +1,15 @@
 #include <reg52.h>
 #define mainScale 3    //c scale
-#define musicSpeed 2     //music speed
+#define musicSpeed 800     //music speed
 typedef unsigned char uint8;
 typedef unsigned int  uint16;
 typedef char int8;
 typedef int  int16;
 
-uint16 code musicArray[]={
-};     //   x是否连音x音长x音调x音阶
+uint16 code musicArray[]={150
+};     //   lianzyin long diao  scale
 uint16 code soundFrequ[7][7]={
-     // C   C#   D   D#    E     E#   F   G   G#   A   A#    B
+  // C     D   E     F   G   A   B
 33,37,41,46,49,55,61,            //C1  0
 65,73,82,92,98,110,123,      //C     1
 130,146,164,185,196,220,246,      //c      2
@@ -69,12 +69,11 @@ void playMusic()
 	tmrFlag = 0;
 	if(time==beatTime)
 	{
-		musicCon++;
 		time = 0;
 		
-		musicScale = (musicArray[musicCon]%10)-1;
+		musicScale = (musicArray[musicCon]%10);
 		musicDegree = (musicArray[musicCon]/10%10);
-		musicLong = (musicArray[musicCon]/100)%10);
+		musicLong = (musicArray[musicCon]/100)%10;
 		musicLine = (musicArray[musicCon]%1000);
 		musicDegree = mainScale + musicDegree - 5;
 		
@@ -83,15 +82,15 @@ void playMusic()
 			enable = 0;
 			T0RH = 0XD8;
 			T0RL = 0XF0;
-			beatTime = (50*musicLong)/musicSpeed;
+			beatTime = (25*musicLong)-musicSpeed;     //weizhi
 			enable = 0;
 		}
 		else
 		{
-		T0RH =tmr0reload[musicDegree][musicScale]>>8;
-		T0RL =tmr0reload[musicDegree][musicScale];
-		beatTime  = soundFrequ[musicDegree][musicScale]*musicLong;
-		beatTime = beatTime/musicSpeed;
+		T0RH =tmr0reload[musicDegree][musicScale-1]>>8;
+		T0RL =tmr0reload[musicDegree][musicScale-1];
+		beatTime  = (soundFrequ[musicDegree][musicScale-1]*musicLong)>>1;
+		beatTime = beatTime-musicSpeed;
 		if(musicLine)
 		{
 			soundTime = beatTime; 
@@ -102,6 +101,7 @@ void playMusic()
 		}
 		enable = 1;
 		}
+		musicCon++;
 	}
 	else if(time==soundTime)
 	{
