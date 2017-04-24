@@ -140,7 +140,7 @@ void playMusic()
 {
 	uint16 musicCon=0;
 	uint8 musicSpeed=10;
-	uint8 musicScale=5;
+	uint8 mainScale=5;
 	uint16 time=0,soundTime=0,beatTime=0;
 	uint8 musicScale;
 	uint8 musicDegree;
@@ -155,9 +155,10 @@ void playMusic()
 		time = 0;
 	   switch (musicCon)
 	   {
-	   	case  :
-	   	
-	   	
+	   	case  92:      mainScale=3;musicSpeed=7;break;
+	   	case 574:mainScale=5;musicSpeed=10;break;
+	   	case 710:mainScale=5;musicSpeed=11;break;
+	   	case 1018:
 	   }
 		musicScale = (musicArray[musicCon]%10);
 		musicDegree = (musicArray[musicCon]/10%10);
