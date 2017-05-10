@@ -13,7 +13,7 @@ uint8 code displayDat[8]={
 uint8 code displayByt[]={0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01};					 
     //   lianzyin long diao  scale
 uint16 code musicArray[]={
-						  263,163,163,264,265,	1363,162,362,	261,161,161,262,263,	1363,157,457,
+					  263,163,163,264,265,	1363,162,362,	261,161,161,262,263,	1363,157,457,
 						  256,263,462,	256,263,462,	256,263,362,161,	661,260,
 						  						  263,163,163,264,265,	1363,162,362,	261,161,161,262,263,	1363,157,457,
 						  256,263,462,	256,263,462,	256,263,362,161,	661,260,
@@ -68,7 +68,7 @@ uint16 code musicArray[]={
 						  361,1161,	256,256,	662,	161,162,      //1
 						  363,1162,262,256,		461,450,
 						  363,1162,	262,256,	461,	450,	363,1162,	462,	450,456,
-						  461,450,450,450	//zhu ni yi lu shun feng 
+						  461,450,450,450,	//zhu ni yi lu shun feng 	   
 						  445,254,1253,853,  243,252,247,1251,851,  250,251,256,255,353,1152,252,251,  
 852,850,  445,254,1253,653,255,  251,247,252,1251,451,250,145,145,  446,454,454,155,1153,852,850,  250,245,354,1153,853,  243,252,352,1151,851,  250,251,256,255,353,1152,252,151,852,850,  
 445,354,1153,653,254,255,251,252,1251,451,250,146,147,
@@ -160,14 +160,14 @@ void playMusic()
 	if(time==beatTime)
 	{
 		time = 0;
-	   switch (musicCon)
+	  switch (musicCon)
 	   {
-	   	case  92:      mainScale=5;musicSpeed=7;break;
+	   	case  92:      mainScale=4;musicSpeed=7;break;
 	   	case 574:mainScale=5;musicSpeed=11;break;
 	   	case 710:mainScale=5;musicSpeed=11;break;
-	  	case 1018:mainScale=4;musicSpeed=10;break;
-	  	default: break;
-	   }
+	  	case 1018:mainScale=5;musicSpeed=7;break;
+	  	default: break;						
+	   }								   
 		musicScale = (musicArray[musicCon]%10);
 		musicDegree = (musicArray[musicCon]/10%10);
 		musicLong = (musicArray[musicCon]/100)%10;
